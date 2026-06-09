@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stackly - Admin Control Center</title>
+  <title>Admin Control Center</title>
   <link rel="stylesheet" href="style.css">
   <style>
     /* Admin-specific accent overrides */
@@ -181,7 +181,7 @@
     <!-- Sidebar Navigation -->
     <aside class="sidebar" id="sidebar">
       <a href="dashboard-admin-overview.html" class="sidebar-brand">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+        
           <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="url(#sidebar-logo-grad)" />
           <defs>
             <linearGradient id="sidebar-logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -190,7 +190,7 @@
             </linearGradient>
           </defs>
         </svg>
-        <span class="brand-name">Stackly</span>
+        <img src="./src/assets/stackly_logo_-removebg-preview.webp" alt="Stackly Logo" class="brand-logo">
       </a>
 
       <ul class="sidebar-menu">
@@ -252,6 +252,14 @@
           </svg>
           Disconnect Node
         </a>
+        <div class="sidebar-auth-links" style="display: flex; gap: 8px; width: 100%; margin-top: 8px;">
+          <a href="login.html" class="btn-small" style="flex: 1; justify-content: center; font-size: 12px; padding: 8px 0; border: 1px solid var(--border-color); background: rgba(255,255,255,0.02);">
+            Login
+          </a>
+          <a href="signup.html" class="btn-small" style="flex: 1; justify-content: center; font-size: 12px; padding: 8px 0; border: 1px solid var(--border-color); background: rgba(255,255,255,0.02);">
+            Register
+          </a>
+        </div>
       </footer>
     </aside>
 

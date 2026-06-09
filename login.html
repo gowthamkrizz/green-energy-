@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stackly - Clean Energy Access Portal</title>
+  <title>Clean Energy Access Portal</title>
   <link rel="stylesheet" href="style.css">
   <script src="auth-check.js"></script>
 </head>
@@ -23,7 +23,7 @@
     
     <!-- Logo & Brand Header -->
     <header class="brand-header">
-      <span class="brand-name">Stackly</span>
+      <img src="./src/assets/stackly_logo_-removebg-preview.webp" alt="Stackly Logo" class="brand-logo">
     </header>
 
     <h2 class="auth-title">Grid Portal Login</h2>
@@ -50,7 +50,7 @@
       <div class="form-group">
         <label for="email" class="form-label">Grid Identifier / Email</label>
         <div class="input-wrapper">
-          <input type="email" id="email" class="form-input" placeholder="e.g. gowtham123@stackly.io" required pattern="^[a-zA-Z]+[0-9]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Email must follow standard format, starting with letters followed only by numbers (e.g. user123@domain.com). Numbers-first emails like 123user are not accepted.">
+          <input type="email" id="email" class="form-input" placeholder="e.g. gowtham123@stackly.io" required autocomplete="off" pattern="^[a-zA-Z]+[0-9]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Email must follow standard format, starting with letters followed only by numbers (e.g. user123@domain.com). Numbers-first emails like 123user are not accepted.">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
@@ -61,7 +61,7 @@
       <div class="form-group">
         <label for="password" class="form-label">Access Keys / Password</label>
         <div class="input-wrapper">
-          <input type="password" id="password" class="form-input" placeholder="••••••••••••" required>
+          <input type="password" id="password" class="form-input" placeholder="••••••••••••" required autocomplete="new-password">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>

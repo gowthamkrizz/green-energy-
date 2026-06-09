@@ -26,13 +26,6 @@
       window.location.href = 'dashboard-admin-overview.html';
     }
   } else {
-    // Auth check for login/signup pages (if logged in, skip login screen)
-    if (email && (page === 'index.html' || page === 'login.html' || page === 'signup.html')) {
-      if (role === 'admin') {
-        window.location.href = 'dashboard-admin-overview.html';
-      } else {
-        window.location.href = 'dashboard-overview.html';
-      }
-    }
+    // No redirect on auth pages to allow direct access (e.g. from dashboard links)
   }
 })();
