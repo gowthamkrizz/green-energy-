@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stackly - Operational Dashboard Overview</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="auth-check.js"></script>
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <a href="dashboard-overview.html" class="sidebar-brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="url(#sidebar-logo-grad)" />
+          <defs>
+            <linearGradient id="sidebar-logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--primary)" />
+              <stop offset="100%" stop-color="var(--secondary)" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="brand-name">Stackly</span>
+      </a>
+
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard-overview.html" class="menu-item-link active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="9"></rect>
+              <rect x="14" y="3" width="7" height="5"></rect>
+              <rect x="14" y="12" width="7" height="9"></rect>
+              <rect x="3" y="16" width="7" height="5"></rect>
+            </svg>
+            Overview
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-solar.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            Solar Grid
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-wind.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path>
+            </svg>
+            Wind Turbines
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-savings.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            Eco Analytics
+          </a>
+        </li>
+      </ul>
+
+      <footer class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="profile-avatar">AC</div>
+          <div class="profile-info">
+            <span class="profile-name">Alexis Carter</span>
+
+          </div>
+        </div>
+        <a href="index.html" class="btn-small logout-btn" style="justify-content: center; width: 100%;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Disconnect Node
+        </a>
+      </footer>
+    </aside>
+
+    <!-- Main Workspace Content -->
+    <main class="main-content">
+      
+      <!-- Top Navigation Header -->
+      <nav class="top-nav">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button class="hamburger-menu" id="sidebar-toggle" aria-label="Toggle Navigation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="page-title-area">
+            <h1>Grid Overview</h1>
+          </div>
+        </div>
+
+        <div class="nav-actions">
+          <div class="metric-trend up" style="font-size:13px; font-weight:500;">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--primary); box-shadow:0 0 6px var(--primary-glow); margin-right:4px;"></span>
+            Active Generation: <span id="live-grid-generation">14.86 kW</span>
+          </div>
+          <button class="btn-icon" id="theme-toggle" aria-label="Toggle Design Theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+          <a href="404.html" class="btn-icon" aria-label="System Alerts Notification">
+            <span class="badge-dot"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </a>
+        </div>
+      </nav>
+
+      <!-- Dashboard Grid: Core Metrics -->
+      <section class="dashboard-grid">
+        <!-- Metric 1: Real-time generation -->
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Grid Load</span>
+            <span class="metric-value" data-live-telemetry="total">14.86 kW</span>
+            <span class="metric-trend up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              +4.8%
+            </span>
+          </div>
+          <div class="metric-icon-box green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Metric 2: Solar Energy yield -->
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Solar Yield</span>
+            <span class="metric-value" data-live-telemetry="solar">6.28 kW</span>
+            <span class="metric-trend up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              +8.1%
+            </span>
+          </div>
+          <div class="metric-icon-box orange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Metric 3: Wind Energy yield -->
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Wind Yield</span>
+            <span class="metric-value" data-live-telemetry="wind">8.58 kW</span>
+            <span class="metric-trend down">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;">
+                <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
+                <polyline points="17 18 23 18 23 12"></polyline>
+              </svg>
+              -2.4%
+            </span>
+          </div>
+          <div class="metric-icon-box blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Metric 4: Grid Efficiency -->
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Efficiency</span>
+            <span class="metric-value" data-live-telemetry="efficiency">98.6%</span>
+            <span class="metric-trend up" style="color:var(--secondary)">
+              System Nominal
+            </span>
+          </div>
+          <div class="metric-icon-box red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14"></line>
+              <line x1="9" y1="21" x2="9" y2="9"></line>
+              <line x1="14" y1="21" x2="14" y2="16"></line>
+              <line x1="19" y1="21" x2="19" y2="5"></line>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Chart Workspace Grid -->
+      <section class="chart-grid">
+        <!-- Generation Trend (Line Chart) -->
+        <div class="chart-card glass">
+          <div class="chart-header">
+            <h2 class="chart-title">Production Trend (24h)</h2>
+            <div style="display:flex; gap:8px;">
+              <span class="metric-trend" style="color:var(--primary); font-size:12px; margin-right:8px;">
+                <span style="width:10px; height:10px; background:var(--primary); display:inline-block; border-radius:2px; margin-right:4px;"></span> Solar Output
+              </span>
+              <span class="metric-trend" style="color:var(--secondary); font-size:12px;">
+                <span style="width:10px; height:10px; background:var(--secondary); display:inline-block; border-radius:2px; margin-right:4px;"></span> Wind Output
+              </span>
+            </div>
+          </div>
+          
+          <div class="svg-chart-container">
+            <!-- Custom interactive line chart SVG filled dynamically by script -->
+            <svg width="100%" height="100%" viewBox="0 0 500 230" preserveAspectRatio="none" id="svg-generation-line-chart"></svg>
+          </div>
+        </div>
+
+        <!-- Energy Distribution Summary -->
+        <div class="chart-card glass">
+          <div class="chart-header">
+            <h2 class="chart-title">Grid Breakdown</h2>
+          </div>
+          
+          <div class="data-list" style="margin-top: 15px;">
+            <div class="control-item">
+              <div class="control-label-row">
+                <span>Solar Array Output</span>
+                <span>42%</span>
+              </div>
+              <div class="progress-bar-container" style="display:block; height:6px;">
+                <div class="progress-bar-fill" style="width: 42%; background: var(--accent); box-shadow: 0 0 6px var(--accent-glow);"></div>
+              </div>
+            </div>
+
+            <div class="control-item">
+              <div class="control-label-row">
+                <span>Wind Turbine Output</span>
+                <span>54%</span>
+              </div>
+              <div class="progress-bar-container" style="display:block; height:6px;">
+                <div class="progress-bar-fill" style="width: 54%; background: var(--primary); box-shadow: 0 0 6px var(--primary-glow);"></div>
+              </div>
+            </div>
+
+            <div class="control-item">
+              <div class="control-label-row">
+                <span>Hydro/Back-up storage</span>
+                <span>4%</span>
+              </div>
+              <div class="progress-bar-container" style="display:block; height:6px;">
+                <div class="progress-bar-fill" style="width: 4%; background: var(--secondary); box-shadow: 0 0 6px var(--secondary-glow);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Grid Notifications & Control Actions -->
+      <section class="chart-card glass" style="margin-bottom: 20px;">
+        <div class="chart-header">
+          <h2 class="chart-title">Recent Grid Events</h2>
+          <a href="404.html" class="btn-small">View Historical Log</a>
+        </div>
+        
+        <div class="data-list">
+          <div class="data-item">
+            <div class="data-item-label">
+              <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--primary); box-shadow:0 0 6px var(--primary-glow);"></span>
+              Solar Panel Array 3 Tilt Optimized. Sunlight conversion efficiency increased by 3.2%.
+            </div>
+            <span class="data-item-value" style="color:var(--text-muted); font-size:12px;">10 mins ago</span>
+          </div>
+
+          <div class="data-item">
+            <div class="data-item-label">
+              <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--primary); box-shadow:0 0 6px var(--primary-glow);"></span>
+              Wind speed reached 14.2 m/s. Active Turbines output capped at maximum storage rates.
+            </div>
+            <span class="data-item-value" style="color:var(--text-muted); font-size:12px;">38 mins ago</span>
+          </div>
+
+          <div class="data-item" style="border-color: rgba(255,183,0,0.15);">
+            <div class="data-item-label">
+              <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent-glow);"></span>
+              Action Required: Synchronize battery cell discharge rate with current evening grids.
+            </div>
+            <a href="404.html" class="btn-small" style="background: rgba(255, 183, 0, 0.05); border-color: rgba(255, 183, 0, 0.2); color: var(--accent);">Sync Grid</a>
+          </div>
+
+          <div class="data-item" style="border-color: rgba(0, 225, 255, 0.15);">
+            <div class="data-item-label">
+              <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--secondary); box-shadow:0 0 6px var(--secondary-glow);"></span>
+              System Notification: New smart grid integration tier available. Expand distribution nodes.
+            </div>
+            <a href="404.html" class="btn-small" style="background: rgba(0, 225, 255, 0.05); border-color: rgba(0, 225, 255, 0.2); color: var(--secondary);">Upgrade Grid</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="dashboard.js"></script>
+<script>
+  const name = localStorage.getItem('stackly-name') || localStorage.getItem('stackly-email');
+  if (name) {
+    const displayName = name.includes('@') ? 
+      name.split('@')[0].split(/[\._\-]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 
+      name;
+    document.querySelectorAll('.profile-name').forEach(el => el.textContent = displayName);
+    const initials = displayName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+    if (initials) {
+      document.querySelectorAll('.profile-avatar').forEach(el => el.textContent = initials);
+    }
+  }
+</script>
+</body>
+</html>

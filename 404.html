@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stackly - Page Not Found</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="error-page">
+
+  <!-- CRT Visual Filter -->
+  <div class="crt-overlay"></div>
+
+  <!-- Sparking Grid Background -->
+  <div class="grid-line-sparkle"></div>
+  <div class="spark-lines" id="spark-lines-container"></div>
+
+  <!-- Error Card Container -->
+  <main class="error-container glass float-anim">
+    
+    <!-- Glitched Warning Code -->
+    <div class="error-code" id="error-code">404</div>
+
+    <h1 class="error-title">Grid Link Terminated</h1>
+    <p class="error-desc">
+      The specified grid sector does not exist or has experienced a severe solar flare brownout. All energy flow routes to this address have been shut down for system safety.
+    </p>
+
+    <!-- Simulated Command-line Diagnostic Log -->
+    <div class="terminal-box">
+      <div class="terminal-line">&gt; stackly --status diagnostics</div>
+      <div class="terminal-line">[<span class="green">OK</span>] Core generator loop online.</div>
+      <div class="terminal-line">[<span class="green">OK</span>] Battery banks status: Nominal.</div>
+      <div class="terminal-line">[<span class="cyan">WARN</span>] Route lookup failed: "REQUESTED_SECTOR_NOT_FOUND"</div>
+      <div class="terminal-line">[<span class="danger">FATAL</span>] Power Grid Failure at Sector 0x404. Connections severed.</div>
+      <div class="terminal-line">&gt; initializing system bypass... <span class="danger">FAILED</span></div>
+    </div>
+
+    <!-- Countdown Timer -->
+    <div class="redirect-notice" style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+      Redirecting to login portal in <span id="countdown" style="color: var(--primary); font-weight: 700;">10</span> seconds...
+    </div>
+
+    <!-- Reboot Widget -->
+    <div class="reboot-widget">
+      <div class="reboot-status" id="reboot-status-text">Manual Bypass Required</div>
+      
+      <!-- Progress Bar (shown during reboot) -->
+      <div class="progress-bar-container" id="reboot-progress-container">
+        <div class="progress-bar-fill" id="reboot-progress-bar"></div>
+      </div>
+
+      <button id="reboot-button" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Return to Login Portal
+      </button>
+    </div>
+
+  </main>
+
+  <script>
+    // Create random spark line animations in background
+    const container = document.getElementById('spark-lines-container');
+
+    for (let i = 0; i < 8; i++) {
+      const spark = document.createElement('div');
+      const isHorizontal = Math.random() > 0.5;
+      
+      spark.className = `spark-line ${isHorizontal ? 'h' : 'v'}`;
+      spark.style.left = `${Math.random() * 100}vw`;
+      spark.style.top = `${Math.random() * 100}vh`;
+      
+      // Randomize delay and duration
+      spark.style.animationDelay = `${Math.random() * 4}s`;
+      spark.style.animationDuration = `${Math.random() * 2 + 2}s`;
+      
+      container.appendChild(spark);
+    }
+
+    // Countdown redirect to login page (10 seconds)
+    let seconds = 10;
+    const countdownEl = document.getElementById('countdown');
+    const countdownInterval = setInterval(() => {
+      seconds--;
+      countdownEl.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(countdownInterval);
+        window.location.href = 'login.html';
+      }
+    }, 1000);
+
+    // Reboot button → go directly to login
+    const btn = document.getElementById('reboot-button');
+    btn.addEventListener('click', () => {
+      clearInterval(countdownInterval);
+      btn.style.pointerEvents = 'none';
+      btn.style.opacity = '0.5';
+
+      const progressContainer = document.getElementById('reboot-progress-container');
+      const progressBar = document.getElementById('reboot-progress-bar');
+      const statusText = document.getElementById('reboot-status-text');
+
+      progressContainer.style.display = 'block';
+      statusText.innerHTML = "Re-routing to login portal...";
+      statusText.style.color = "var(--secondary)";
+
+      let width = 0;
+      const interval = setInterval(() => {
+        width += Math.random() * 6 + 2;
+        if (width >= 100) {
+          width = 100;
+          clearInterval(interval);
+          statusText.innerHTML = "Connection restored! Redirecting...";
+          statusText.style.color = "var(--primary)";
+          progressBar.style.width = '100%';
+
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 800);
+        } else {
+          progressBar.style.width = `${width}%`;
+        }
+      }, 80);
+    });
+  </script>
+</body>
+</html>

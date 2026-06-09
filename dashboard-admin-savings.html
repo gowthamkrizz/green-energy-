@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stackly - Admin Eco Savings & Analytics</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="auth-check.js"></script>
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    
+    <!-- Sidebar Navigation (Admin Mode, Savings active) -->
+    <aside class="sidebar" id="sidebar">
+      <a href="dashboard-admin-overview.html" class="sidebar-brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="url(#sidebar-logo-grad)" />
+          <defs>
+            <linearGradient id="sidebar-logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--primary)" />
+              <stop offset="100%" stop-color="var(--secondary)" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="brand-name">Stackly</span>
+      </a>
+
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard-admin-overview.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Admin Center
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-admin-solar.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            Solar Grid
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-admin-wind.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path>
+            </svg>
+            Wind Turbines
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-admin-savings.html" class="menu-item-link active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            Eco Analytics
+          </a>
+        </li>
+      </ul>
+
+      <footer class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="profile-avatar">AD</div>
+          <div class="profile-info">
+            <span class="profile-name">Grid Admin</span>
+          </div>
+        </div>
+        <a href="index.html" class="btn-small logout-btn" style="justify-content: center; width: 100%;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Disconnect Node
+        </a>
+      </footer>
+    </aside>
+
+    <!-- Main Workspace Content -->
+    <main class="main-content">
+      
+      <!-- Top Navigation Header -->
+      <nav class="top-nav">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button class="hamburger-menu" id="sidebar-toggle" aria-label="Toggle Navigation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="page-title-area">
+            <h1>Admin Eco Analytics & Ledger</h1>
+          </div>
+        </div>
+
+        <div class="nav-actions">
+          <div class="metric-trend up" style="font-size:13px; font-weight:500; color:var(--primary);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;display:inline-block;">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            System Tier: Diamond Operator
+          </div>
+          <button class="btn-icon" id="theme-toggle" aria-label="Toggle Design Theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+          <a href="404.html" class="btn-icon" aria-label="Notifications">
+            <span class="badge-dot"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </a>
+        </div>
+      </nav>
+
+      <!-- Eco Core Metrics Cards -->
+      <section class="dashboard-grid">
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Grid Offset Value</span>
+            <span class="metric-value">$5,422.10</span>
+            <span class="metric-trend up">Calculated Net Value</span>
+          </div>
+          <div class="metric-icon-box green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">System Carbon Offset</span>
+            <span class="metric-value">48.24 Tons</span>
+            <span class="metric-trend up">Total CO2 Avoided</span>
+          </div>
+          <div class="metric-icon-box green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Available Carbon Pool</span>
+            <span class="metric-value">125.0 Credits</span>
+            <span class="metric-trend" style="color:var(--primary);">Ready for trade</span>
+          </div>
+          <div class="metric-icon-box green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+          </div>
+        </div>
+
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Total Trees Equivalent</span>
+            <span class="metric-value">1,200 Trees</span>
+            <span class="metric-trend up">Forestry Offset</span>
+          </div>
+          <div class="metric-icon-box green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 22h20L12 2z"></path>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- Savings Charts & settings Grid -->
+      <section class="chart-grid">
+        <!-- Monthly Savings Bar Chart -->
+        <div class="chart-card glass">
+          <div class="chart-header">
+            <h2 class="chart-title">Net Grid System Savings (YTD)</h2>
+            <a href="404.html" class="btn-small">Download Audit Report</a>
+          </div>
+
+          <div class="svg-chart-container">
+            <!-- Customized Vertical Bar Chart SVG -->
+            <svg width="100%" height="100%" viewBox="0 0 500 230" id="svg-savings-bar-chart" preserveAspectRatio="none"></svg>
+          </div>
+        </div>
+
+        <!-- Account Billing & Credit Sell Action Card -->
+        <div class="chart-card glass">
+          <div class="chart-header">
+            <h2 class="chart-title">Grid Marketplace Configuration</h2>
+          </div>
+
+          <div class="control-row">
+            <div class="control-item" style="border-bottom: 1px solid var(--border-color); padding-bottom:12px;">
+              <div class="control-label-row">
+                <span>Credit Trading Portal (Admin Control)</span>
+                <span style="color:var(--primary); font-weight:700;">$1,800.00 Bal</span>
+              </div>
+              <p style="font-size:12px; color:var(--text-muted); margin-top:4px; margin-bottom:8px;">Execute grid-level wholesale credit trade settlements.</p>
+              <button class="btn btn-primary admin-action-btn" data-action="Execute wholesale credit settlement">Settle Marketplace Credits</button>
+            </div>
+
+            <div class="control-item" style="padding-top:4px;">
+              <div class="control-label-row" style="align-items:center;">
+                <span>Auto-sell Credits</span>
+                <label style="position:relative; display:inline-block; width:40px; height:20px;">
+                  <input type="checkbox" checked style="opacity:0; width:0; height:0;">
+                  <span style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:var(--primary); transition:0.3s; border-radius:34px;">
+                    <span style="position:absolute; content:''; height:14px; width:14px; left:22px; bottom:3px; background-color:var(--bg-color); transition:0.3s; border-radius:50%;"></span>
+                  </span>
+                </label>
+              </div>
+              <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">Automatically execute selling transactions at peak marketplace values.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Billing History Settings -->
+      <section class="chart-card glass" style="margin-bottom: 20px;">
+        <div class="chart-header">
+          <h2 class="chart-title">Operator Billing Ledger</h2>
+          <a href="404.html" class="btn-small">Export Historical Billing</a>
+        </div>
+        
+        <div class="data-list">
+          <div class="data-item">
+            <div class="data-item-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="data-item-icon" style="color:var(--primary);">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              Grid Cycle: May 2026 (Wholesale Surplus Offset)
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <span class="metric-trend up" style="color:var(--primary);">-$1,104.50 Credits Applied</span>
+              <a href="404.html" class="btn-small">Receipt PDF</a>
+            </div>
+          </div>
+
+          <div class="data-item">
+            <div class="data-item-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="data-item-icon" style="color:var(--primary);">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              Grid Cycle: Apr 2026 (Wholesale Surplus Offset)
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <span class="metric-trend up" style="color:var(--primary);">-$921.20 Credits Applied</span>
+              <a href="404.html" class="btn-small">Receipt PDF</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="dashboard.js"></script>
+  <script>
+    const name = localStorage.getItem('stackly-name') || localStorage.getItem('stackly-email');
+    if (name) {
+      const displayName = name.includes('@') ? 
+        name.split('@')[0].split(/[\._\-]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 
+        name;
+      document.querySelectorAll('.profile-name').forEach(el => el.textContent = displayName);
+      const initials = displayName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+      if (initials) {
+        document.querySelectorAll('.profile-avatar').forEach(el => el.textContent = initials);
+      }
+    }
+
+    // Interactivity for admin action buttons
+    document.querySelectorAll('.admin-action-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const action = this.getAttribute('data-action');
+        const origText = this.innerHTML;
+        this.innerHTML = '✓ Settlement Complete';
+        this.style.background = 'linear-gradient(135deg, var(--secondary), var(--primary))';
+        this.style.color = '#050811';
+        
+        alert('Grid operator alert: ' + action + ' successfully authorized and dispatched.');
+
+        setTimeout(() => {
+          this.innerHTML = origText;
+          this.style.background = '';
+          this.style.color = '';
+        }, 2000);
+      });
+    });
+  </script>
+</body>
+</html>

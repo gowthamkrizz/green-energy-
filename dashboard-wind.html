@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stackly - Wind Turbine Controls</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="auth-check.js"></script>
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    
+    <!-- Sidebar Navigation (Same as overview, Wind active) -->
+    <aside class="sidebar" id="sidebar">
+      <a href="dashboard-overview.html" class="sidebar-brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="url(#sidebar-logo-grad)" />
+          <defs>
+            <linearGradient id="sidebar-logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--primary)" />
+              <stop offset="100%" stop-color="var(--secondary)" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="brand-name">Stackly</span>
+      </a>
+
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard-overview.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="9"></rect>
+              <rect x="14" y="3" width="7" height="5"></rect>
+              <rect x="14" y="12" width="7" height="9"></rect>
+              <rect x="3" y="16" width="7" height="5"></rect>
+            </svg>
+            Overview
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-solar.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            Solar Grid
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-wind.html" class="menu-item-link active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path>
+            </svg>
+            Wind Turbines
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-savings.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            Eco Analytics
+          </a>
+        </li>
+      </ul>
+
+      <footer class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="profile-avatar">AC</div>
+          <div class="profile-info">
+            <span class="profile-name">Alexis Carter</span>
+
+          </div>
+        </div>
+        <a href="index.html" class="btn-small logout-btn" style="justify-content: center; width: 100%;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Disconnect Node
+        </a>
+      </footer>
+    </aside>
+
+    <!-- Main Workspace Content -->
+    <main class="main-content">
+      
+      <!-- Top Navigation Header -->
+      <nav class="top-nav">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button class="hamburger-menu" id="sidebar-toggle" aria-label="Toggle Navigation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="page-title-area">
+            <h1>Wind Farm Telemetry</h1>
+          </div>
+        </div>
+
+        <div class="nav-actions">
+          <div class="metric-trend up" style="font-size:13px; font-weight:500; color:var(--secondary);">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--secondary); box-shadow:0 0 6px var(--secondary-glow); margin-right:4px;"></span>
+            Wind Generation: <span id="telemetry-wind-val">8.58 kW</span>
+          </div>
+          <button class="btn-icon" id="theme-toggle" aria-label="Toggle Design Theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+          <a href="404.html" class="btn-icon" aria-label="Notifications">
+            <span class="badge-dot"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </a>
+        </div>
+      </nav>
+
+      <!-- Wind Core Telemetry Cards -->
+      <section class="dashboard-grid">
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Operational Speed</span>
+            <span class="metric-value">9.4 m/s</span>
+            <span class="metric-trend up">Gentle Breeze</span>
+          </div>
+          <div class="metric-icon-box blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12h20M2 18h16M2 6h12"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Online Turbines</span>
+            <span class="metric-value">4 / 5</span>
+            <span class="metric-trend down" style="color:var(--danger)">1 Node Offline</span>
+          </div>
+          <div class="metric-icon-box blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="9" y1="3" x2="9" y2="21"></line>
+              <line x1="15" y1="3" x2="15" y2="21"></line>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="3" y1="15" x2="21" y2="15"></line>
+            </svg>
+          </div>
+        </div>
+
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Avg Rotor Velocity</span>
+            <span class="metric-value">18.2 RPM</span>
+            <span class="metric-trend" style="color:var(--secondary);">Steady Pitch Rate</span>
+          </div>
+          <div class="metric-icon-box blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Blade Angle / Pitch</span>
+            <span class="metric-value">8.2°</span>
+            <span class="metric-trend up">Auto-Feather Active</span>
+          </div>
+          <div class="metric-icon-box blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 7 4 4 20 4 20 7"></polyline>
+              <line x1="9" y1="20" x2="15" y2="20"></line>
+              <line x1="12" y1="4" x2="12" y2="20"></line>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- Wind Charts & Control Tools -->
+      <section class="chart-grid">
+        <!-- Wind Speed interactive slider simulator -->
+        <div class="chart-card glass">
+          <div class="chart-header">
+            <h2 class="chart-title">Manual Wind Speed Simulator</h2>
+            <span class="metric-trend" style="color:var(--secondary);">Auto-governing at 25 m/s</span>
+          </div>
+
+          <div class="control-row">
+            <div class="control-item">
+              <div class="control-label-row">
+                <span>Simulated Wind Speed</span>
+                <span id="wind-speed-value" style="color: var(--secondary); font-weight:700;">9.4 m/s</span>
+              </div>
+              <input type="range" id="wind-speed-slider" min="0" max="30" step="0.5" value="9.4" class="control-slider">
+            </div>
+
+            <div class="control-item" style="margin-top: 10px;">
+              <div class="control-label-row">
+                <span>Simulated Power Generation</span>
+                <span id="wind-yield-value" style="color: var(--primary); font-weight:700;">8.58 kW</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive animated SVG wind turbine -->
+          <div class="interactive-visualizer glass">
+            <div style="position: absolute; top: 15px; left: 15px; font-size:12px; color:var(--text-muted); text-transform:uppercase;">Realtime Rotor Animation</div>
+            
+            <svg width="220" height="135" style="overflow: visible;">
+              <!-- Wind turbine support tower -->
+              <polygon points="107,125 113,125 111,50 109,50" fill="var(--text-dark)"></polygon>
+              <!-- Cabin nacelle -->
+              <rect x="105" y="44" width="10" height="7" rx="1.5" fill="var(--text-muted)"></rect>
+              
+              <!-- Blades structure -->
+              <g class="turbine-blade-group" id="wind-turbine-blades" style="transform-origin: 110px 47.5px; animation: spin 3.5s linear infinite;">
+                <circle cx="110" cy="47.5" r="3.5" fill="var(--text-main)"></circle>
+                <!-- Blade 1 -->
+                <polygon points="110,47.5 111.5,10 108.5,10" fill="var(--text-main)"></polygon>
+                <!-- Blade 2 -->
+                <polygon points="110,47.5 142.5,66 141,68.5" fill="var(--text-main)"></polygon>
+                <!-- Blade 3 -->
+                <polygon points="110,47.5 77.5,66 79,68.5" fill="var(--text-main)"></polygon>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Wind Farm Grid Node Map -->
+        <div class="chart-card glass">
+          <div class="chart-header">
+            <h2 class="chart-title">Wind Sector Node Map</h2>
+          </div>
+
+          <div style="height: 180px; width:100%; display:flex; justify-content:center; align-items:center; position:relative;">
+            <!-- Vector Grid Map representation of 5 turbines -->
+            <svg viewBox="0 0 200 150" class="wind-map-svg">
+              <!-- Grid line guides -->
+              <circle cx="100" cy="75" r="50" stroke="rgba(255,255,255,0.02)" fill="none" stroke-width="1.5"></circle>
+              <circle cx="100" cy="75" r="30" stroke="rgba(255,255,255,0.02)" fill="none" stroke-width="1.5"></circle>
+              
+              <!-- Map nodes -->
+              <!-- Node 1 (Turbine 1) -->
+              <a href="404.html">
+                <circle cx="60" cy="50" r="16" class="map-node active" />
+                <circle cx="60" cy="50" r="5" class="turbine-dot" />
+                <text x="60" y="30" class="svg-axis-text" text-anchor="middle">WT-1</text>
+              </a>
+              <!-- Node 2 (Turbine 2) -->
+              <a href="404.html">
+                <circle cx="140" cy="55" r="16" class="map-node active" />
+                <circle cx="140" cy="55" r="5" class="turbine-dot" />
+                <text x="140" y="35" class="svg-axis-text" text-anchor="middle">WT-2</text>
+              </a>
+              <!-- Node 3 (Turbine 3) -->
+              <a href="404.html">
+                <circle cx="100" cy="115" r="16" class="map-node active" />
+                <circle cx="100" cy="115" r="5" class="turbine-dot" />
+                <text x="100" y="95" class="svg-axis-text" text-anchor="middle">WT-3</text>
+              </a>
+              <!-- Node 4 (Turbine 4) -->
+              <a href="404.html">
+                <circle cx="50" cy="110" r="16" class="map-node active" />
+                <circle cx="50" cy="110" r="5" class="turbine-dot" />
+                <text x="50" y="90" class="svg-axis-text" text-anchor="middle">WT-4</text>
+              </a>
+              <!-- Node 5 (Turbine 5 - Offline/Diagnostics) -->
+              <a href="404.html">
+                <circle cx="150" cy="110" r="16" class="map-node" style="stroke:var(--danger);" />
+                <circle cx="150" cy="110" r="5" class="turbine-dot offline" />
+                <text x="150" y="90" class="svg-axis-text" text-anchor="middle" style="fill:var(--danger)">WT-5</text>
+              </a>
+            </svg>
+          </div>
+
+          <div style="font-size:11px; text-align:center; color:var(--text-muted);">
+            Click on individual nodes to query telemetry lines.
+          </div>
+        </div>
+      </section>
+
+      <!-- Turbine List Status Controls -->
+      <section class="chart-card glass" style="margin-bottom: 20px;">
+        <div class="chart-header">
+          <h2 class="chart-title">Active Turbines Status</h2>
+          <span style="font-size:12px; color:var(--text-muted);">Select turbine node for remote calibration</span>
+        </div>
+        
+        <div class="data-list">
+          <div class="data-item">
+            <div class="data-item-label">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--primary); box-shadow:0 0 6px var(--primary-glow); margin-right:8px;"></span>
+              Turbine 1 (Vestas V150) - North sector
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <span class="metric-trend up" style="color:var(--primary);">Generating: 2.14 kW</span>
+              <a href="404.html" class="btn-small">Calibration Diagnostics</a>
+            </div>
+          </div>
+
+          <div class="data-item">
+            <div class="data-item-label">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--primary); box-shadow:0 0 6px var(--primary-glow); margin-right:8px;"></span>
+              Turbine 2 (Vestas V150) - East sector
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <span class="metric-trend up" style="color:var(--primary);">Generating: 2.10 kW</span>
+              <a href="404.html" class="btn-small">Calibration Diagnostics</a>
+            </div>
+          </div>
+
+          <div class="data-item" style="border-color: rgba(255,71,87,0.15);">
+            <div class="data-item-label">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--danger); box-shadow:0 0 6px var(--danger-glow); margin-right:8px;"></span>
+              Turbine 5 (Siemens Gamesa) - Southern sector
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <span class="metric-trend down" style="color:var(--danger);">Fault: Turbine Overheat</span>
+              <a href="404.html" class="btn-small" style="background: rgba(255, 71, 87, 0.05); border-color: rgba(255, 71, 87, 0.2); color: var(--danger);">Run Safety Shutdown</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="dashboard.js"></script>
+  <script>
+    const name = localStorage.getItem('stackly-name') || localStorage.getItem('stackly-email');
+    if (name) {
+      const displayName = name.includes('@') ? 
+        name.split('@')[0].split(/[\._\-]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 
+        name;
+      document.querySelectorAll('.profile-name').forEach(el => el.textContent = displayName);
+      const initials = displayName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+      if (initials) {
+        document.querySelectorAll('.profile-avatar').forEach(el => el.textContent = initials);
+      }
+    }
+  </script>
+</body>
+</html>

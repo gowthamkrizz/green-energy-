@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stackly - Register New Node</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="auth-check.js"></script>
+</head>
+<body class="auth-page">
+
+  <!-- Background Video and Energy Canvas fallback -->
+  <div class="video-bg-container">
+    <video autoplay loop muted playsinline poster=".//src/assets/photo-1509391366360-2e959784a276.webp">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-solar-panels-in-a-sunny-day-42172-large.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+    <div class="profile-name" id="profile-name"></div>
+    <canvas id="energy-canvas"></canvas>
+  </div>
+
+  <!-- Register Card container -->
+  <main class="auth-card glass float-anim">
+    
+    <!-- Logo & Brand Header -->
+    <header class="brand-header">
+      
+      <span class="brand-name">Stackly</span>
+    </header>
+
+    <h2 class="auth-title">Register Grid Node</h2>
+    <p class="auth-subtitle">Initialize your clean energy storage connection</p>
+
+    <!-- Sign Up Form -->
+    <form id="signup-form" action="index.html" method="GET">
+      <div class="form-group">
+        <label for="name" class="form-label">Operator Name</label>
+        <div class="input-wrapper">
+          <input type="text" id="name" class="form-input" placeholder="e.g. Alexis Carter" required>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="role" class="form-label">System Role</label>
+        <div class="input-wrapper">
+          <select id="role" class="form-input" required>
+            <option value="" disabled selected hidden>Select Role...</option>
+            <option value="user">User / Consumer Node</option>
+            <option value="admin">Admin / Grid Operator</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="form-label">Operational Email</label>
+        <div class="input-wrapper">
+          <input type="email" id="email" class="form-input" placeholder="e.g. gowtham123@stackly.io" required pattern="^[a-zA-Z]+[0-9]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Email must follow standard format, starting with letters followed only by numbers (e.g. user123@domain.com). Numbers-first emails like 123user are not accepted.">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Establish Security Key</label>
+        <div class="input-wrapper">
+          <input type="password" id="password" class="form-input" placeholder="••••••••••••" minlength="8" required>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-actions" style="margin-bottom: 24px;">
+        <label class="remember-me" style="font-size: 13px;">
+          <input type="checkbox" class="checkbox-custom" required>
+          I agree to the Grid Protocol Terms
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary">
+        Provision Operator Account
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </button>
+    </form>
+
+    <div class="divider">Or Sign Up Via</div>
+
+    <!-- Social Signups linking to 404 Error page -->
+    <div class="social-buttons">
+      <!-- Google SVG Icon -->
+      <a href="404.html" class="btn-social" aria-label="Sign up via Google">
+        <svg viewBox="0 0 24 24">
+          <path d="M12.24 10.285V13.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.859-3.578-7.859-8s3.53-8 7.859-8c2.46 0 4.105 1.025 5.047 1.926l2.427-2.334C17.955 2.192 15.34 1 12.24 1 5.92 1 1 5.92 1 12s4.92 11 11.24 11c6.59 0 11-4.636 11-11.182 0-.755-.082-1.332-.18-1.533H12.24z"/>
+        </svg>
+      </a>
+      <!-- GitHub SVG Icon -->
+      <a href="404.html" class="btn-social" aria-label="Sign up via GitHub">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+      </a>
+      <!-- Apple SVG Icon -->
+      <a href="404.html" class="btn-social" aria-label="Sign up via Apple">
+        <svg viewBox="0 0 24 24">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.22.67-2.94 1.51-.63.73-1.18 1.87-1.03 2.97 1.12.09 2.27-.56 2.98-1.42z"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Auth Navigation footer -->
+    <footer class="auth-footer">
+      Existing node operator? <a href="index.html" class="auth-link">Authenticate Keys</a>
+    </footer>
+
+  </main>
+
+  <script>
+    // Store signup info with email validation
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const role = document.getElementById('role')?.value || 'user';
+      
+      // Strict letter-first email validation (letters then optional numbers before @)
+      const emailRegex = /^[a-zA-Z]+[0-9]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        alert("Invalid email format. Email must follow standard format, starting with letters followed only by numbers (e.g., user123@domain.com). Numbers-first emails like 123user are not accepted.");
+        return;
+      }
+      
+      // Retrieve existing users or empty array
+      let users = JSON.parse(localStorage.getItem('stackly-registered-users') || '[]');
+      
+      // Seed default credentials if first time, so we don't overwrite them
+      if (users.length === 0) {
+        users = [
+          {
+            name: "Grid Admin",
+            email: "admin@stackly.io",
+            password: "admin123",
+            role: "admin"
+          },
+          {
+            name: "Gowtham",
+            email: "gowtham123@stackly.io",
+            password: "user123",
+            role: "user"
+          }
+        ];
+      }
+
+      // Check if user already exists
+      const userExists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
+      if (userExists) {
+        alert("Access Identifier Registry Error: This email is already registered. Please login.");
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      // Save new user
+      users.push({
+        name: name,
+        email: email,
+        password: password,
+        role: role
+      });
+      
+      localStorage.setItem('stackly-registered-users', JSON.stringify(users));
+      
+      alert("Registration Successful: Grid node initialization parameters saved.");
+      
+      // Redirect to login page after successful signup
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

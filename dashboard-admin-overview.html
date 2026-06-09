@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stackly - Admin Control Center</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Admin-specific accent overrides */
+    .admin-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.12), rgba(0, 225, 255, 0.08));
+      border: 1px solid rgba(0, 255, 136, 0.25);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+    }
+    .admin-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary-glow);
+      animation: pulse 2s infinite;
+    }
+    .admin-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .node-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .node-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .node-card:hover {
+      border-color: var(--primary);
+      background: rgba(0, 255, 136, 0.03);
+      transform: translateY(-2px);
+    }
+    .node-card.offline {
+      border-color: rgba(255, 71, 87, 0.2);
+    }
+    .node-card.offline:hover {
+      border-color: var(--danger);
+      background: rgba(255, 71, 87, 0.03);
+    }
+    .node-icon {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .node-icon.online {
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      color: var(--primary);
+    }
+    .node-icon.offline {
+      background: rgba(255, 71, 87, 0.1);
+      border: 1px solid rgba(255, 71, 87, 0.3);
+      color: var(--danger);
+    }
+    .node-name { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+    .node-status { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+    .health-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .health-bar-row:last-child { border-bottom: none; }
+    .health-label { font-size: 13px; font-weight: 500; min-width: 120px; }
+    .health-track {
+      flex: 1; height: 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .health-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+    .health-val { font-size: 12px; font-weight: 700; min-width: 45px; text-align: right; }
+    .log-entry {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      font-size: 13px;
+    }
+    .log-entry:last-child { border-bottom: none; }
+    .log-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+    .log-time { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+    .settings-form-group {
+      margin-bottom: 20px;
+    }
+    .settings-form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+    }
+    .settings-input {
+      width: 100%;
+      background: rgba(8, 13, 26, 0.4);
+      border: 1px solid var(--border-color);
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: var(--text-main);
+      font-size: 14px;
+      font-family: var(--font-body);
+      outline: none;
+      transition: var(--transition);
+      box-sizing: border-box;
+    }
+    .settings-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 10px 0 var(--border-glow);
+    }
+    .settings-input.invalid {
+      border-color: var(--danger);
+      box-shadow: 0 0 10px 0 rgba(255, 71, 87, 0.15);
+    }
+    .validation-msg {
+      font-size: 11px;
+      margin-top: 6px;
+      display: none;
+    }
+    .validation-msg.error { color: var(--danger); display: block; }
+    .validation-msg.success { color: var(--primary); display: block; }
+    @media (max-width: 768px) {
+      .node-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .node-grid { grid-template-columns: 1fr; }
+      .health-label { min-width: 80px; font-size: 12px; }
+    }
+  </style>
+  <script src="auth-check.js"></script>
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <a href="dashboard-admin-overview.html" class="sidebar-brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke="url(#sidebar-logo-grad)" />
+          <defs>
+            <linearGradient id="sidebar-logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="var(--primary)" />
+              <stop offset="100%" stop-color="var(--secondary)" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="brand-name">Stackly</span>
+      </a>
+
+      <ul class="sidebar-menu">
+        <li>
+          <a href="dashboard-admin-overview.html" class="menu-item-link active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Admin Center
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-admin-solar.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            Solar Grid
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-admin-wind.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path>
+            </svg>
+            Wind Turbines
+          </a>
+        </li>
+        <li>
+          <a href="dashboard-admin-savings.html" class="menu-item-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            Eco Analytics
+          </a>
+        </li>
+      </ul>
+
+      <footer class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="profile-avatar">AD</div>
+          <div class="profile-info">
+            <span class="profile-name">Grid Admin</span>
+          </div>
+        </div>
+        <a href="index.html" class="btn-small logout-btn" style="justify-content: center; width: 100%;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Disconnect Node
+        </a>
+      </footer>
+    </aside>
+
+    <!-- Main Workspace Content -->
+    <main class="main-content">
+      
+      <!-- Top Navigation Header -->
+      <nav class="top-nav">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button class="hamburger-menu" id="sidebar-toggle" aria-label="Toggle Navigation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="page-title-area">
+            <h1>Admin Control Center</h1>
+          </div>
+        </div>
+
+        <div class="nav-actions">
+          <span class="admin-badge">Admin Mode</span>
+          <button class="btn-icon" id="theme-toggle" aria-label="Toggle Design Theme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+          <a href="404.html" class="btn-icon" aria-label="System Alerts">
+            <span class="badge-dot"></span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </a>
+        </div>
+      </nav>
+
+      <!-- Admin Core Metric Cards -->
+      <section class="dashboard-grid">
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Total Grid Load</span>
+            <span class="metric-value" data-live-telemetry="total">14.86 kW</span>
+            <span class="metric-trend up">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+              +4.8% from yesterday
+            </span>
+          </div>
+          <div class="metric-icon-box green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+          </div>
+        </div>
+
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Active Grid Nodes</span>
+            <span class="metric-value">18 / 20</span>
+            <span class="metric-trend up">90% Uptime</span>
+          </div>
+          <div class="metric-icon-box blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg>
+          </div>
+        </div>
+
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">Registered Users</span>
+            <span class="metric-value">1,247</span>
+            <span class="metric-trend up">+32 this week</span>
+          </div>
+          <div class="metric-icon-box orange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+        </div>
+
+        <div class="metric-card glass">
+          <div class="metric-info">
+            <span class="metric-label">System Override</span>
+            <span class="metric-value" style="color: var(--primary);">NOMINAL</span>
+            <span class="metric-trend up" style="color:var(--secondary)">All Systems Green</span>
+          </div>
+          <div class="metric-icon-box green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- System Health & Node Map Grid -->
+      <section class="chart-grid">
+        <!-- System Health Monitor -->
+        <div class="chart-card glass">
+          <div class="chart-header">
+            <h2 class="chart-title">System Health Monitor</h2>
+            <span class="admin-badge">Live</span>
+          </div>
+
+          <div class="health-bar-row">
+            <span class="health-label">CPU Load</span>
+            <div class="health-track">
+              <div class="health-fill" style="width: 34%; background: linear-gradient(90deg, var(--primary), var(--secondary));"></div>
+            </div>
+            <span class="health-val" style="color:var(--primary);">34%</span>
+          </div>
+          <div class="health-bar-row">
+            <span class="health-label">Memory Usage</span>
+            <div class="health-track">
+              <div class="health-fill" style="width: 62%; background: linear-gradient(90deg, var(--secondary), var(--accent));"></div>
+            </div>
+            <span class="health-val" style="color:var(--accent);">62%</span>
+          </div>
+          <div class="health-bar-row">
+            <span class="health-label">Storage I/O</span>
+            <div class="health-track">
+              <div class="health-fill" style="width: 28%; background: linear-gradient(90deg, var(--primary), #05d072);"></div>
+            </div>
+            <span class="health-val" style="color:var(--primary);">28%</span>
+          </div>
+          <div class="health-bar-row">
+            <span class="health-label">Network Bandwidth</span>
+            <div class="health-track">
+              <div class="health-fill" style="width: 81%; background: linear-gradient(90deg, var(--accent), var(--danger));"></div>
+            </div>
+            <span class="health-val" style="color:var(--danger);">81%</span>
+          </div>
+          <div class="health-bar-row">
+            <span class="health-label">Grid Latency</span>
+            <div class="health-track">
+              <div class="health-fill" style="width: 12%; background: linear-gradient(90deg, var(--primary), var(--secondary));"></div>
+            </div>
+            <span class="health-val" style="color:var(--primary);">4ms</span>
+          </div>
+        </div>
+
+        <!-- Node Infrastructure Map -->
+        <div class="chart-card glass">
+          <div class="chart-header">
+            <h2 class="chart-title">Grid Nodes</h2>
+            <span style="font-size:11px; color:var(--text-muted);">Click to inspect</span>
+          </div>
+
+          <div class="node-grid">
+            <a href="dashboard-solar.html" class="node-card" style="text-decoration:none; color:inherit;">
+              <div class="node-icon online">S1</div>
+              <div class="node-name">Solar East</div>
+              <div class="node-status" style="color:var(--primary);">● Online</div>
+            </a>
+            <a href="dashboard-solar.html" class="node-card" style="text-decoration:none; color:inherit;">
+              <div class="node-icon online">S2</div>
+              <div class="node-name">Solar West</div>
+              <div class="node-status" style="color:var(--primary);">● Online</div>
+            </a>
+            <a href="dashboard-wind.html" class="node-card" style="text-decoration:none; color:inherit;">
+              <div class="node-icon online">W1</div>
+              <div class="node-name">Wind North</div>
+              <div class="node-status" style="color:var(--primary);">● Online</div>
+            </a>
+            <a href="dashboard-wind.html" class="node-card" style="text-decoration:none; color:inherit;">
+              <div class="node-icon online">W2</div>
+              <div class="node-name">Wind East</div>
+              <div class="node-status" style="color:var(--primary);">● Online</div>
+            </a>
+            <a href="404.html" class="node-card offline" style="text-decoration:none; color:inherit;">
+              <div class="node-icon offline">W3</div>
+              <div class="node-name">Wind South</div>
+              <div class="node-status" style="color:var(--danger);">● Offline</div>
+            </a>
+            <a href="dashboard-savings.html" class="node-card" style="text-decoration:none; color:inherit;">
+              <div class="node-icon online">B1</div>
+              <div class="node-name">Battery Hub</div>
+              <div class="node-status" style="color:var(--primary);">● Online</div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Operator Settings & Audit Log Grid -->
+      <section class="chart-grid">
+        <!-- Operator Settings Card -->
+        <div class="chart-card glass">
+          <div class="chart-header">
+            <h2 class="chart-title">Operator Settings</h2>
+          </div>
+
+          <div class="admin-section-title">Grid Operator Profile</div>
+
+          <div class="settings-form-group">
+            <label for="admin-name">Operator Display Name</label>
+            <input type="text" id="admin-name" class="settings-input" placeholder="Enter your name..." value="">
+          </div>
+
+          <div class="settings-form-group">
+            <label for="admin-email">Grid Operator Email ID</label>
+            <input type="email" id="admin-email" class="settings-input" placeholder="e.g. gowtham123@stackly.io" value="">
+            <div class="validation-msg" id="email-validation-msg"></div>
+          </div>
+
+          <div style="margin-top: 8px;">
+            <button id="save-settings-btn" class="btn btn-primary" style="padding: 12px; font-size: 13px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              Save Operator Settings
+            </button>
+          </div>
+
+          <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+            <div class="admin-section-title">Quick Actions</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+              <a href="404.html" class="btn-small" style="flex: 1; justify-content: center;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                Reset Grid
+              </a>
+              <a href="404.html" class="btn-small" style="flex: 1; justify-content: center; background: rgba(255, 71, 87, 0.05); border-color: rgba(255, 71, 87, 0.2); color: var(--danger);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Emergency Stop
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-time Audit Log -->
+        <div class="chart-card glass">
+          <div class="chart-header">
+            <h2 class="chart-title">Audit Log</h2>
+            <a href="404.html" class="btn-small">Export Log</a>
+          </div>
+
+          <div>
+            <div class="log-entry">
+              <div class="log-dot" style="background: var(--primary); box-shadow: 0 0 6px var(--primary-glow);"></div>
+              <div>
+                <div>Admin <strong>gowtham</strong> authenticated via Grid Portal.</div>
+                <div class="log-time">2 mins ago</div>
+              </div>
+            </div>
+            <div class="log-entry">
+              <div class="log-dot" style="background: var(--secondary); box-shadow: 0 0 6px var(--secondary-glow);"></div>
+              <div>
+                <div>Solar Array East tilt angle recalibrated to <strong>38°</strong> for peak efficiency.</div>
+                <div class="log-time">14 mins ago</div>
+              </div>
+            </div>
+            <div class="log-entry">
+              <div class="log-dot" style="background: var(--accent); box-shadow: 0 0 6px var(--accent-glow);"></div>
+              <div>
+                <div>Battery storage reached <strong>84%</strong> capacity. Auto-sell credits triggered.</div>
+                <div class="log-time">28 mins ago</div>
+              </div>
+            </div>
+            <div class="log-entry">
+              <div class="log-dot" style="background: var(--danger); box-shadow: 0 0 6px var(--danger-glow);"></div>
+              <div>
+                <div>Turbine <strong>WT-5</strong> overheated. Safety shutdown initiated on southern sector.</div>
+                <div class="log-time">42 mins ago</div>
+              </div>
+            </div>
+            <div class="log-entry">
+              <div class="log-dot" style="background: var(--primary); box-shadow: 0 0 6px var(--primary-glow);"></div>
+              <div>
+                <div>New user <strong>operator_node_47</strong> registered and assigned to consumer tier.</div>
+                <div class="log-time">1 hour ago</div>
+              </div>
+            </div>
+            <div class="log-entry">
+              <div class="log-dot" style="background: var(--secondary); box-shadow: 0 0 6px var(--secondary-glow);"></div>
+              <div>
+                <div>Grid firmware updated to <strong>v4.2.1</strong>. All nodes synchronized.</div>
+                <div class="log-time">3 hours ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Connected User Activity Table -->
+      <section class="chart-card glass" style="margin-bottom: 20px;">
+        <div class="chart-header">
+          <h2 class="chart-title">Connected User Nodes</h2>
+          <a href="404.html" class="btn-small">Manage All Users</a>
+        </div>
+        
+        <div class="data-list">
+          <div class="data-item">
+            <div class="data-item-label">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--primary); box-shadow:0 0 6px var(--primary-glow); margin-right:8px;"></span>
+              Node #1042 — <strong>Alex Rivera</strong> (alex.rivera@cleanpower.net)
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <span class="metric-trend up" style="color:var(--primary);">Consuming: 2.3 kW</span>
+              <a href="404.html" class="btn-small">Inspect Node</a>
+            </div>
+          </div>
+
+          <div class="data-item">
+            <div class="data-item-label">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--primary); box-shadow:0 0 6px var(--primary-glow); margin-right:8px;"></span>
+              Node #1038 — <strong>Priya Sharma</strong> (priya.sharma@solarlink.io)
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <span class="metric-trend up" style="color:var(--primary);">Consuming: 1.8 kW</span>
+              <a href="404.html" class="btn-small">Inspect Node</a>
+            </div>
+          </div>
+
+          <div class="data-item">
+            <div class="data-item-label">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent-glow); margin-right:8px;"></span>
+              Node #1019 — <strong>Marcus Chen</strong> (marcus.chen@windgrid.org)
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <span class="metric-trend" style="color:var(--accent);">Idle — Standby</span>
+              <a href="404.html" class="btn-small" style="background: rgba(255, 183, 0, 0.05); border-color: rgba(255, 183, 0, 0.2); color: var(--accent);">Send Alert</a>
+            </div>
+          </div>
+
+          <div class="data-item" style="border-color: rgba(255,71,87,0.15);">
+            <div class="data-item-label">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--danger); box-shadow:0 0 6px var(--danger-glow); margin-right:8px;"></span>
+              Node #0998 — <strong>Sarah Kim</strong> (sarah.kim@ecosync.co)
+            </div>
+            <div style="display:flex; gap:12px; align-items:center;">
+              <span class="metric-trend down" style="color:var(--danger);">Disconnected</span>
+              <a href="404.html" class="btn-small" style="background: rgba(255, 71, 87, 0.05); border-color: rgba(255, 71, 87, 0.2); color: var(--danger);">Force Reconnect</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="dashboard.js"></script>
+  <script>
+    // ---- Profile Name & Avatar Sync ----
+    const name = localStorage.getItem('stackly-name') || localStorage.getItem('stackly-email');
+    if (name) {
+      const displayName = name.includes('@') ? 
+        name.split('@')[0].split(/[\._\-]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 
+        name;
+      document.querySelectorAll('.profile-name').forEach(el => el.textContent = displayName);
+      const initials = displayName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+      if (initials) {
+        document.querySelectorAll('.profile-avatar').forEach(el => el.textContent = initials);
+      }
+    }
+
+    // ---- Operator Settings Form ----
+    const adminNameInput = document.getElementById('admin-name');
+    const adminEmailInput = document.getElementById('admin-email');
+    const emailMsg = document.getElementById('email-validation-msg');
+    const saveBtn = document.getElementById('save-settings-btn');
+
+    // Pre-populate from localStorage
+    const storedName = localStorage.getItem('stackly-name') || '';
+    const storedEmail = localStorage.getItem('stackly-email') || '';
+    if (storedName) adminNameInput.value = storedName;
+    if (storedEmail) adminEmailInput.value = storedEmail;
+
+    // Real-time email validation feedback
+    adminEmailInput.addEventListener('input', function() {
+      const val = this.value.trim();
+      if (!val) {
+        emailMsg.className = 'validation-msg';
+        emailMsg.textContent = '';
+        this.classList.remove('invalid');
+        return;
+      }
+      const emailRegex = /^[a-zA-Z]+[0-9]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (emailRegex.test(val)) {
+        emailMsg.className = 'validation-msg success';
+        emailMsg.textContent = '✓ Valid email format';
+        this.classList.remove('invalid');
+      } else {
+        emailMsg.className = 'validation-msg error';
+        if (/^[0-9]/.test(val)) {
+          emailMsg.textContent = '✗ Email must start with letters (e.g. user123, not 123user)';
+        } else {
+          emailMsg.textContent = '✗ Invalid email format (letters then numbers only)';
+        }
+        this.classList.add('invalid');
+      }
+    });
+
+    // Save settings
+    saveBtn.addEventListener('click', function() {
+      const emailVal = adminEmailInput.value.trim();
+      const nameVal = adminNameInput.value.trim();
+      
+      const emailRegex = /^[a-zA-Z]+[0-9]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (emailVal && !emailRegex.test(emailVal)) {
+        alert('Invalid email ID. Email must follow standard format, starting with letters followed only by numbers (e.g., user123@domain.com).');
+        adminEmailInput.focus();
+        return;
+      }
+      
+      if (nameVal) localStorage.setItem('stackly-name', nameVal);
+      if (emailVal) localStorage.setItem('stackly-email', emailVal);
+      
+      // Update profile display immediately
+      const displayName = nameVal || (emailVal ? emailVal.split('@')[0].split(/[\._\-]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : '');
+      if (displayName) {
+        document.querySelectorAll('.profile-name').forEach(el => el.textContent = displayName);
+        const initials = displayName.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+        document.querySelectorAll('.profile-avatar').forEach(el => el.textContent = initials);
+      }
+      
+      // Visual save feedback
+      const origText = saveBtn.innerHTML;
+      saveBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><polyline points="20 6 9 17 4 12"></polyline></svg> Settings Saved!';
+      saveBtn.style.background = 'linear-gradient(135deg, var(--secondary), var(--primary))';
+      setTimeout(() => {
+        saveBtn.innerHTML = origText;
+        saveBtn.style.background = '';
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
